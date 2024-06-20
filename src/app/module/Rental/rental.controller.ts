@@ -13,7 +13,7 @@ export const createRental = async (req: AuthRequest, res: Response, next: NextFu
         if (!req.user) {
             return res.status(httpStatus.UNAUTHORIZED).json({
                 success: false,
-                message: 'User not authenticated',
+                message: 'User not authenticated !',
                 data: [],
             });
         }
