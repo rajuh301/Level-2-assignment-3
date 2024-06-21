@@ -27,7 +27,7 @@ Installation
 Clone the repository:
 
 bash
-git clone https://github.com/rajuh301/Level-2-assignment-3/edit/main
+git clone https://github.com/rajuh301/Level-2-assignment-3/tree/main?tab=readme-ov-file
 cd rental-management-system
 Install dependencies:
 
