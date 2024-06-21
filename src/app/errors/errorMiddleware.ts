@@ -1,8 +1,8 @@
 // app/middleware/globalErrorHandler.ts
-import { Request, Response, NextFunction } from 'express';
+import { Request, Response } from 'express';
 import AppError from './AppError';
 
-const globalErrorHandler = (err: AppError, req: Request, res: Response, next: NextFunction) => {
+const globalErrorHandler = (err: AppError, req: Request, res: Response) => {
   err.statusCode = err.statusCode || 500;
   err.status = err.status || 'error';
 

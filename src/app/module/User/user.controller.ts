@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from 'express';
 import { userServeces } from './user.service';
-import { userValidationSchema, userIdValidationSchema, userEmailValidationSchema, userLoginValidationSchema, updateUserValidationSchema } from './user.validation';
+import { userValidationSchema, userIdValidationSchema, userEmailValidationSchema, userLoginValidationSchema } from './user.validation';
 import { z } from 'zod';
 import AppError from '../../errors/AppError';
 import httpStatus from 'http-status';
@@ -44,11 +44,9 @@ export const createUser = async (req: Request, res: Response, next: NextFunction
       });
     } catch (error) {
       if (error instanceof z.ZodError) {
-        console.error('Validation error:', error);
         return next(new AppError(httpStatus.BAD_REQUEST, 'Validation error'));
       } else {
-        console.error('Internal server error:', error);
-        return next(new AppError(httpStatus.INTERNAL_SERVER_ERROR, 'Internal server error'));
+        return next(new AppError(httpStatus.INTERNAL_SERVER_ERROR, 'Internal server error v2'));
       }
     }
   };
@@ -161,7 +159,7 @@ export const loginUser = async (req: Request, res: Response, next: NextFunction)
         if (!jwtAccessSecret || !jwtRefreshSecret) {
             return res.status(500).json({
                 success: false,
-                message: 'Internal server error',
+                message: 'Internal server error v3',
                 error: 'JWT secrets are not defined',
             });
         }
@@ -186,7 +184,6 @@ export const loginUser = async (req: Request, res: Response, next: NextFunction)
             },
         });
     } catch (error) {
-        console.error('Login error:', error);
         next(error);
     }
 };
@@ -248,7 +245,7 @@ export const updateUserProfile = async (req: AuthRequest, res: Response, next: N
         data: updatedUser,
       });
     } catch (error) {
-      next(new AppError(httpStatus.INTERNAL_SERVER_ERROR, 'Internal Server Error'));
+      next(new AppError(httpStatus.INTERNAL_SERVER_ERROR, 'Internal Server Error v4'));
     }
   };
 // -------------------------- Uldate profile ----------------------

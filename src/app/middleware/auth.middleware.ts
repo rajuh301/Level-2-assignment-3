@@ -1,10 +1,11 @@
 
 
-import { Request, Response, NextFunction } from 'express';
+import { Response, NextFunction } from 'express';
 import jwt, { JwtPayload } from 'jsonwebtoken';
 import dotenv from 'dotenv';
 import User from '../module/User/user.model';
 import { AuthRequest } from '../interface';
+import { TUser } from '../module/User/user.interface';
 
 dotenv.config();
 
@@ -32,7 +33,7 @@ export const authMiddleware = async (req: AuthRequest, res: Response, next: Next
     if (!jwtSecret) {
       return res.status(500).json({
         success: false,
-        message: 'Internal server error',
+        message: 'Internal server error v1',
         error: 'JWT secret is not defined',
       });
     }
@@ -55,7 +56,7 @@ export const authMiddleware = async (req: AuthRequest, res: Response, next: Next
       });
     }
 
-    req.user = user;
+    req.user = user as TUser;
     next();
   } catch (error) {
     return res.status(401).json({

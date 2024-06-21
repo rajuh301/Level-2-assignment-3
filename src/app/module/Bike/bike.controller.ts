@@ -27,7 +27,6 @@ export const createBike = async (req: AuthRequest, res: Response, next: NextFunc
       data: savedBike,
     });
   } catch (error) {
-    console.error('Error creating bike:', error);
     next(new AppError(httpStatus.INTERNAL_SERVER_ERROR, 'Internal server error'));
   }
 };

@@ -1,5 +1,5 @@
 
-import { Request, Response, NextFunction } from 'express';
+import { Response, NextFunction } from 'express';
 import { AuthRequest } from '../../interface';
 import AppError from '../../errors/AppError';
 import httpStatus from 'http-status';

@@ -1,4 +1,4 @@
-import { Request, Response, NextFunction } from 'express';
+import { Response, NextFunction } from 'express';
 import httpStatus from 'http-status';
 import Rental from './rental.model';
 import Bike from '../Bike/bike.model';
@@ -64,7 +64,6 @@ export const createRental = async (req: AuthRequest, res: Response, next: NextFu
             data: rental,
         });
     } catch (error) {
-        console.error('Error creating rental:', error);
         next(error);
     }
 };
@@ -137,12 +136,8 @@ export const getAllRentalsForUser = async (req: AuthRequest, res: Response, next
         
 
         const userId = new mongoose.Types.ObjectId(req.user._id);
-        // console.log('Authenticated User ID:', userId);
-
-        // Log all rentals in the database
-        const allRentals = await Rental.find();
+     
     
-
         const rentals = await Rental.find({ userId })
             .populate('bikeId', '-__v')
             .populate('userId', '-password -__v');
@@ -162,7 +157,7 @@ export const getAllRentalsForUser = async (req: AuthRequest, res: Response, next
             message: 'Rentals retrieved successfully',
             data: rentals,
         });
-    } catch (error:any) {
+    } catch (error) {
        
         next(new AppError(500, 'Error retrieving rentals:', [{ path: '', message: error.message }]));
     }

@@ -49,21 +49,16 @@ const userSchema = new Schema({
 
 );
 
-
-
-
-
 userSchema.pre('save', async function (next) {
-  const user = this;
-  if (!user.isModified('password')) {
+  if (!this.isModified('password')) {
     return next();
   }
 
   try {
     const salt = await bcrypt.genSalt(Number(config.bcrypt_salt_rounds));
-    user.password = await bcrypt.hash(user.password, salt);
+    this.password = await bcrypt.hash(this.password, salt);
     next();
-  } catch (error: any) {
+  } catch (error) {
     next(error);
   }
 });
@@ -73,15 +68,7 @@ userSchema.methods.comparePassword = async function (enteredPassword: string) {
   return await bcrypt.compare(enteredPassword, this.password);
 };
 
-
 // Create the User model
 const User = mongoose.model<TUser>('User', userSchema);
 
 export default User;
-
-
-
-
-
-
-
