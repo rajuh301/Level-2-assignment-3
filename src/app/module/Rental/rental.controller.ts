@@ -157,7 +157,7 @@ export const getAllRentalsForUser = async (req: AuthRequest, res: Response, next
             message: 'Rentals retrieved successfully',
             data: rentals,
         });
-    } catch (error) {
+    } catch (error:any) {
        
         next(new AppError(500, 'Error retrieving rentals:', [{ path: '', message: error.message }]));
     }

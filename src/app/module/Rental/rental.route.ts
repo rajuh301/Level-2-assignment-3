@@ -13,3 +13,4 @@ router.get('/', authMiddleware, getAllRentalsForUser);
 
 
 export const rentalRoute = router;
+  

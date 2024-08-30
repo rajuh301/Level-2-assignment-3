@@ -46,7 +46,7 @@ export const createUser = async (req: Request, res: Response, next: NextFunction
       if (error instanceof z.ZodError) {
         return next(new AppError(httpStatus.BAD_REQUEST, 'Validation error'));
       } else {
-        return next(new AppError(httpStatus.INTERNAL_SERVER_ERROR, 'Internal server error v2'));
+        return next(new AppError(httpStatus.INTERNAL_SERVER_ERROR, 'Internal server error'));
       }
     }
   };
@@ -118,6 +118,7 @@ export const getUserByEmail = async (req: Request, res: Response): Promise<void>
     }
 };
 // ------------------ Login----------------
+
 export const loginUser = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const { email, password } = req.body;
@@ -131,8 +132,6 @@ export const loginUser = async (req: Request, res: Response, next: NextFunction)
             });
         }
 
-
-
         // Find user by email
         const user = await userServeces.findUserByEmail(email);
         if (!user) {
@@ -141,8 +140,6 @@ export const loginUser = async (req: Request, res: Response, next: NextFunction)
                 message: 'Invalid email or password',
             });
         }
-
-        // console.log('Stored Password:', user.password); // Log stored password
 
         // Check password
         const isMatch = await userServeces.comparePassword(password, user.password);
@@ -164,9 +161,20 @@ export const loginUser = async (req: Request, res: Response, next: NextFunction)
             });
         }
 
-        // Generate JWT token
-        const token = jwt.sign({ id: user._id, email: user.email }, jwtAccessSecret, {
-            expiresIn: process.env.JWT_ACCESS_EXPIRES_IN || '1d',
+        // Generate JWT token and include role
+        const token = jwt.sign(
+            { id: user._id, email: user.email, role: user.role }, // Include role here
+            jwtAccessSecret,
+            {
+                expiresIn: process.env.JWT_ACCESS_EXPIRES_IN || '1d',
+            }
+        );
+
+        res.cookie('accessToken', token, {
+            httpOnly: true,
+            maxAge: 3600000,
+            secure: process.env.NODE_ENV === 'production',
+            sameSite: 'strict',
         });
 
         return res.status(200).json({
@@ -180,13 +188,14 @@ export const loginUser = async (req: Request, res: Response, next: NextFunction)
                 email: user.email,
                 phone: user.phone,
                 address: user.address,
-                role: user.role,
+                role: user.role, 
             },
         });
     } catch (error) {
         next(error);
     }
 };
+
 // ------------------ Login----------------
 
 // ------------- Get profile ---------------

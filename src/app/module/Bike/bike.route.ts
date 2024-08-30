@@ -6,7 +6,7 @@ import { adminMiddleware } from './bike.admin.midlewere';
 const router = express.Router();
 
 router.post('/', authMiddleware, adminMiddleware, createBike);
-router.get('/', getAllBikes); 
+router.get('/', getAllBikes);
 router.put('/:id', authMiddleware, adminMiddleware, updateBike);
 router.delete('/:id', authMiddleware, adminMiddleware, deleteBike);
 

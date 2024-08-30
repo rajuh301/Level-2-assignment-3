@@ -15,8 +15,8 @@ export const authMiddleware = async (req: AuthRequest, res: Response, next: Next
   const authHeader = req.headers.authorization;
   let token: string | undefined;
 
-  if (authHeader && authHeader.startsWith('Bearer ')) {
-    token = authHeader.split(' ')[1];
+  if (authHeader && authHeader) {
+    token = authHeader;
   } else {
     token = authHeader;
   }

@@ -11,7 +11,11 @@ const app: Application = express();
 // Parsers
 app.use(express.json());
 app.use(cookieParser());
-app.use(cors({ origin: ['http://localhost:5173'] }));
+
+app.use(cors({
+  origin: 'http://localhost:5173', // Replace with your frontend origin
+  credentials: true // Allow cookies and other credentials
+}));
 
 // Application route
 app.use('/api', router);

@@ -4,9 +4,11 @@ import bcrypt from 'bcrypt'
 
 
 const createUserInToDB = async (userData: TUser) => {
-  const result = await User.create(userData);
+  const user = new User(userData);  
+  const result = await user.save(); 
   return result;
 };
+
 
 export const findUserByEmail = async (email: string) => {
   return await User.findOne({ email }).select('+password'); // Ensure password is selected

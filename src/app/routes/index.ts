@@ -7,11 +7,6 @@ import { rentalRoute } from '../module/Rental/rental.route';
 const router = Router();
 
 const moduleRoutes = [
-  {
-    path: '/auth',
-    route: UserRoute,
-  },
-
 
   {
     path: '/users',
